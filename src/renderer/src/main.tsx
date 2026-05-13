@@ -96,7 +96,14 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
       <HashRouter>
         <Routes>
-          <Route element={<><ThemeManager /><App /></>}>
+          <Route
+            element={
+              <>
+                <ThemeManager />
+                <App />
+              </>
+            }
+          >
             <Route path="/" element={<Home />} />
             <Route path="/catalogue" element={<Catalogue />} />
             <Route path="/library" element={<Library />} />
@@ -115,7 +122,15 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           />
           <Route path="/game-launcher" element={<GameLauncher />} />
 
-          <Route path="/big-picture" element={<><ThemeManager /><BigPictureApp /></>}>
+          <Route
+            path="/big-picture"
+            element={
+              <>
+                <ThemeManager />
+                <BigPictureApp />
+              </>
+            }
+          >
             <Route index element={<BigPictureHome />} />
             <Route path="catalogue" element={<BigPictureCatalogue />} />
             <Route path="downloads" element={<BigPictureDownloads />} />
