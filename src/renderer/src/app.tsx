@@ -48,6 +48,34 @@ type WorkWondersWithKnowledge = WorkWonders & {
   };
 };
 
+export function ThemeManager() {
+  const loadAndApplyTheme = useCallback(async () => {
+    const allThemes = (await levelDBService.values("themes")) as {
+      isActive?: boolean;
+      code?: string;
+    }[];
+    const activeTheme = allThemes.find((theme) => theme.isActive);
+    if (activeTheme?.code) {
+      injectCustomCss(activeTheme.code);
+    } else {
+      removeCustomCss();
+    }
+  }, []);
+
+  useEffect(() => {
+    loadAndApplyTheme();
+  }, [loadAndApplyTheme]);
+
+  useEffect(() => {
+    const unsubscribe = window.electron.onCustomThemeUpdated(() => {
+      loadAndApplyTheme();
+    });
+    return () => unsubscribe();
+  }, [loadAndApplyTheme]);
+
+  return null;
+}
+
 export function App() {
   const contentRef = useRef<HTMLDivElement>(null);
   const { updateLibrary, library } = useLibrary();
@@ -334,31 +362,6 @@ export function App() {
       childList: true,
     });
   }, [dispatch, draggingDisabled]);
-
-  const loadAndApplyTheme = useCallback(async () => {
-    const allThemes = (await levelDBService.values("themes")) as {
-      isActive?: boolean;
-      code?: string;
-    }[];
-    const activeTheme = allThemes.find((theme) => theme.isActive);
-    if (activeTheme?.code) {
-      injectCustomCss(activeTheme.code);
-    } else {
-      removeCustomCss();
-    }
-  }, []);
-
-  useEffect(() => {
-    loadAndApplyTheme();
-  }, [loadAndApplyTheme]);
-
-  useEffect(() => {
-    const unsubscribe = window.electron.onCustomThemeUpdated(() => {
-      loadAndApplyTheme();
-    });
-
-    return () => unsubscribe();
-  }, [loadAndApplyTheme]);
 
   const playAudio = useCallback(async () => {
     const soundUrl = await getAchievementSoundUrl();

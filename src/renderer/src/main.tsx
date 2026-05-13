@@ -13,7 +13,7 @@ import "@fontsource/noto-sans/700.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import "react-tooltip/dist/react-tooltip.css";
 
-import { App } from "./app";
+import { App, ThemeManager } from "./app";
 
 import { store } from "./store";
 
@@ -96,7 +96,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
       <HashRouter>
         <Routes>
-          <Route element={<App />}>
+          <Route element={<><ThemeManager /><App /></>}>
             <Route path="/" element={<Home />} />
             <Route path="/catalogue" element={<Catalogue />} />
             <Route path="/library" element={<Library />} />
@@ -115,7 +115,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           />
           <Route path="/game-launcher" element={<GameLauncher />} />
 
-          <Route path="/big-picture" element={<BigPictureApp />}>
+          <Route path="/big-picture" element={<><ThemeManager /><BigPictureApp /></>}>
             <Route index element={<BigPictureHome />} />
             <Route path="catalogue" element={<BigPictureCatalogue />} />
             <Route path="downloads" element={<BigPictureDownloads />} />
